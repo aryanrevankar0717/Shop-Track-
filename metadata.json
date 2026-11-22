@@ -1,0 +1,6 @@
+{
+  "name": "SHOP TRACK",
+  "description": "Complete shop management application for inventory, daily and monthly income tracking, automatic stock alerts, GST calculations, analytics graphs, and PDF/Excel reporting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
