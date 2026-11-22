@@ -1,3 +1,4 @@
+import React from 'react';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { ProductModal } from './components/ProductModal';
 import { Sidebar } from './components/Sidebar';
@@ -14,6 +15,45 @@ import { ReportsPage } from './pages/ReportsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { StockManagementPage } from './pages/StockManagementPage';
 import { TransactionsPage } from './pages/TransactionsPage';
+
+class AppErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { error: Error | null }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
+          <div className="max-w-md w-full bg-white p-6 rounded-xl border border-slate-200 space-y-4">
+            <h1 className="font-display text-lg font-bold text-navy-900">
+              SHOP TRACK encountered an unexpected error
+            </h1>
+            <p className="text-xs font-mono text-red-700 bg-red-50 p-3 rounded-lg break-words">
+              {this.state.error.message}
+            </p>
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 text-sm font-semibold text-white bg-navy-900 rounded-lg"
+            >
+              Reload App
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 function ShopShell() {
   const { activePage, openQuickProductModal, setOpenQuickProductModal } = useShop();
@@ -69,8 +109,10 @@ function ShopShell() {
 
 export default function App() {
   return (
-    <ShopProvider>
-      <ShopShell />
-    </ShopProvider>
+    <AppErrorBoundary>
+      <ShopProvider>
+        <ShopShell />
+      </ShopProvider>
+    </AppErrorBoundary>
   );
 }
